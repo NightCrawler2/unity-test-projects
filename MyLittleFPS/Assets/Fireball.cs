@@ -1,26 +1,25 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Fireball : MonoBehaviour {
 
-	public float speed = 10.0f;
-	public int damage = 1;
+	public float Speed = 10.0f;
+	public int Damage = 1;
 
 	// Use this for initialization
-	void Start () {
+    private void Start () {
 	
 	}
 	
 	// Update is called once per frame
-	void Update () {
-		transform.Translate (0, 0, speed * Time.deltaTime);
+    private void Update () {
+		transform.Translate (0, 0, Speed * Time.deltaTime);
 	}
 
-	void OnTriggerEnter(Collider other){
-		PlayerCharacter player = other.GetComponent<PlayerCharacter> ();
+    private void OnTriggerEnter(Collider other){
+		var player = other.GetComponent<PlayerCharacter> ();
 		if (player != null) {
 			Debug.Log ("Player hit");
 		}
-		Destroy (this.gameObject);
+		Destroy (gameObject);
 	}
 }

@@ -5,7 +5,7 @@ public class RayShooter : MonoBehaviour {
     private Camera _camera;
 
 	// Use this for initialization
-	void Start () {
+    private void Start () {
         _camera = GetComponent<Camera>();
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -13,39 +13,35 @@ public class RayShooter : MonoBehaviour {
     }
 	
 	// Update is called once per frame
-	void Update () {
-	    if (Input.GetMouseButtonDown(0))
-        {
-            Vector3 point = new Vector3(_camera.pixelWidth / 2, _camera.pixelHeight / 2, 0);
+    private void Update () {
+	    if (!Input.GetMouseButtonDown(0)) return;
+	    var point = new Vector3(_camera.pixelWidth / 2f, _camera.pixelHeight / 2f, 0);
 
-            Ray ray = _camera.ScreenPointToRay(point);
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
-            {
-                //StartCoroutine(SphereIndicator(hit.point));
-				GameObject hitObject = hit.transform.gameObject;
-				ReactiveTarget reactTarg = hitObject.GetComponent<ReactiveTarget> ();
-				if (reactTarg != null) {
-					//Debug.Log ("Target hit");
-					reactTarg.ReactToHit();
-				} else {
-					StartCoroutine(SphereIndicator(hit.point));
-				}
-            }
-        }
+	    var ray = _camera.ScreenPointToRay(point);
+	    RaycastHit hit;
+	    if (!Physics.Raycast(ray, out hit)) return;
+	    //StartCoroutine(SphereIndicator(hit.point));
+	    var hitObject = hit.transform.gameObject;
+	    var reactTarg = hitObject.GetComponent<ReactiveTarget> ();
+	    if (reactTarg != null) {
+	        //Debug.Log ("Target hit");
+	        reactTarg.ReactToHit();
+	    } else {
+	        StartCoroutine(SphereIndicator(hit.point));
+	    }
 	}
 
-    void OnGUI()
+    private void OnGUI()
     {
-        int size = 12;
+        const int size = 12;
         float posX = _camera.pixelWidth / 2 - size / 4;
         float posY = _camera.pixelHeight / 2 - size / 2;
         GUI.Label(new Rect(posX, posY, size, size), "*");
     }
 
-    private IEnumerator SphereIndicator(Vector3 position)
+    private static IEnumerator SphereIndicator(Vector3 position)
     {
-        GameObject sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        var sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
         sphere.transform.position = position;
 
         yield return new WaitForSeconds(1);
