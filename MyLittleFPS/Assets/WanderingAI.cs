@@ -18,7 +18,7 @@ public class WanderingAI : MonoBehaviour {
 	// Update is called once per frame
     private void Update () {
         if (!_alive) return;
-        //transform.Translate (0, 0, Speed * Time.deltaTime);
+        transform.Translate (0, 0, Speed * Time.deltaTime);
         var ray = new Ray (transform.position, transform.forward);
 
         RaycastHit hit;
@@ -28,10 +28,8 @@ public class WanderingAI : MonoBehaviour {
         if (hitObject.GetComponent<PlayerCharacter> ()) {
             if (_fireball != null) return;
             _fireball = Instantiate (_fireballPrefab);
-
             _fireball.transform.position = transform.TransformPoint (Vector3.forward * 1.5f);
             _fireball.transform.rotation = transform.rotation;
-            Debug.Log("hit!");
         } else if (hit.distance < ObstacleRange) {
             float angle = Random.Range (-110, 110);
             transform.Rotate (0, angle, 0);
